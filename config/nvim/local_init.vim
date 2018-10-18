@@ -12,7 +12,7 @@ let g:auto_save_events = ["InsertLeave"]
 map <F6> :setlocal spell! spelllang=en_us<CR>
 
 " Folding on indents.  use zo and zc to open and close
-set foldmethod=indent
+" set foldmethod=indent
 
 "" Note that it is necessary to comment out the tabnew functionality init.vim
 "" to preserve T motion command... which is crazy, but whatevs:

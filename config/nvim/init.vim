@@ -31,6 +31,15 @@ call plug#begin(expand('~/.config/nvim/plugged'))
 "*****************************************************************************
 "" Plug install packages
 "*****************************************************************************
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'reedes/vim-lexical'
+Plug 'kana/vim-textobj-user'
+Plug 'reedes/vim-textobj-sentence'
+Plug 'reedes/vim-lexical' " Better spellcheck mappings
+Plug 'reedes/vim-pencil' " Better spellcheck mappings
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
+Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'tpope/vim-commentary'
@@ -203,7 +212,7 @@ else
   let g:indentLine_char = '┆'
   let g:indentLine_faster = 1
 
-  
+
 endif
 
 
@@ -235,12 +244,17 @@ if exists("*fugitive#statusline")
 endif
 
 " vim-airline
-let g:airline_theme = 'powerlineish'
+let g:airline_theme='molokai'
+" let g:airline_solarized_bg='dark'
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline_skip_empty_sections = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#left_sep = '>'
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline_powerline_fonts = 1
 
 "*****************************************************************************
 "" Abbreviations
@@ -355,7 +369,7 @@ nnoremap <leader>sc :CloseSession<CR>
 "" Tabs
 nnoremap <Tab> gt
 nnoremap <S-Tab> gT
-""nnoremap <silent> <S-t> :tabnew<CR>
+" nnoremap <silent> <S-t> :tabnew<CR>
 
 "" Set working directory
 nnoremap <leader>. :lcd %:p:h<CR>
@@ -372,10 +386,10 @@ set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
 let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
 
 " The Silver Searcher
-if executable('ag')
-  let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
-  set grepprg=ag\ --nogroup\ --nocolor
-endif
+"if executable('ag')
+"  let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
+"  set grepprg=ag\ --nogroup\ --nocolor
+"endif
 
 " ripgrep
 if executable('rg')
@@ -554,6 +568,32 @@ vnoremap <leader>rrlv :RRenameLocalVariable<cr>
 vnoremap <leader>rriv :RRenameInstanceVariable<cr>
 vnoremap <leader>rem  :RExtractMethod<cr>
 
+" Writing Stuff
+"
+"
+augroup pencil
+  autocmd!
+  autocmd FileType markdown,mkd,txt,text call pencil#init()
+                            \ | call textobj#sentence#init()
+                            \ | call lexical#init()
+                            \ | setl spell spl=en_us fdl=4 noru nonu nornu
+augroup END
+
+let g:lexical#thesaurus = ['~/.config/nvim/thesaurus/mthesaur.txt',]
+
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight!
+
+" Pencil / Writing Controls {{{
+   let g:pencil#wrapModeDefault = 'soft'
+   let g:pencil#textwidth = 74
+   let g:pencil#joinspaces = 0
+   let g:pencil#cursorwrap = 1
+   let g:pencil#conceallevel = 3
+   let g:pencil#concealcursor = 'c'
+   let g:pencil#softDetectSample = 20
+   let g:pencil#softDetectThreshold = 130
+"}}}
 
 "*****************************************************************************
 "*****************************************************************************
